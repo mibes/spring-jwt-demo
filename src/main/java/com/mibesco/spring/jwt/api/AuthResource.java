@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,15 +33,15 @@ public class AuthResource {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<RestResult> login(@RequestBody RestUser restUser) {
 
-        User user = userService.loadUserByUsername(restUser.getUsername());
-
         try {
+            User user = userService.loadUserByUsername(restUser.getUsername());
+
             if (passwordEncoder.matches(restUser.getPassword(), user.getPassword())) {
                 String token = tokenAuthenticationService.createToken(user);
                 return ResponseEntity.ok(new RestResult(true, token));
             }
         }
-        catch (AuthenticationException e) {
+        catch (UsernameNotFoundException e) {
             log.error("Authentication error: ", e.getMessage());
         }
 
