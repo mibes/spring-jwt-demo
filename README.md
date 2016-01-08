@@ -23,6 +23,9 @@ For example:
 
     curl --header "X-AUTH-TOKEN: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtaWJlcyJ9.B-YTY1vIxXzrcB4GKjL0jAPSRBBKGcE7m9v9cVNQ72AzfSOb975Nc8SXrXDEzhaG6Xfbvb8JGHwuUMVUKH6Y5w" http://localhost:8080/api/greeting
 
+The generated token expires after 60 minutes, after which the application should login again to obtain a new token. 
+
+
 ## Note
 
 Because both the username and password are sent in clear text, you do **not** want to use this authentication mechanism over an unencrypted connection. Always use HTTPS.
